@@ -24,19 +24,25 @@ afterAll(() => {
 });
 
 describe("GET: /api/topics", () => {
-  test("Responds with 200 and array of objects containing two properties: slug and description", () => {
+  test("Returns array of objects containing two properties", () => {
     return request(app)
       .get("/api/topics")
       .expect(200)
       .then((response) => {
-        expect(response.body).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              slug: expect.any(String),
-              description: expect.any(String),
-            }),
-          ])
-        );
+        expect(response.body.length).toBe(3);
+      });
+  });
+  test("Each object in the array contain two properties: slug and description", () => {
+    return request(app)
+      .get("/api/topics")
+      .expect(200)
+      .then((response) => {
+        response.body.forEach((object) => {
+          expect(object).toHaveProperty("slug");
+          expect(object.slug).toEqual(expect.any(String));
+          expect(object).toHaveProperty("description");
+          expect(object.description).toEqual(expect.any(String));
+        });
       });
   });
 });

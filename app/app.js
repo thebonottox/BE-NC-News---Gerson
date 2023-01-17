@@ -2,7 +2,7 @@ const express = require("express");
 const { getTopics } = require("./controllers/controllers");
 
 const app = express();
-app.use(express.json());
+// app.use(express.json()); will need later probably for posting
 
 //Requests:---------------------------------------
 app.get("/api/topics", getTopics);
