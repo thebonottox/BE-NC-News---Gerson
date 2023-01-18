@@ -23,20 +23,92 @@ afterAll(() => {
   return db.end();
 });
 
+// Tests Task 3:---------------------
 describe("GET: /api/topics", () => {
-  test("Responds with 200 and array of objects containing two properties: slug and description", () => {
+  test("Returned array has length of 3", () => {
+    const response = request(app)
+      .get("/api/topics")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.length).toBe(3);
+      });
+  });
+  test("Returned object contains two properties: slug and description", () => {
     return request(app)
       .get("/api/topics")
       .expect(200)
       .then((response) => {
-        expect(response.body).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              slug: expect.any(String),
-              description: expect.any(String),
-            }),
-          ])
-        );
+        response.body.forEach((object) => {
+          expect(object).toHaveProperty("slug");
+          expect(object.slug).toEqual(expect.any(String));
+          expect(object).toHaveProperty("description");
+          expect(object.description).toEqual(expect.any(String));
+        });
+      });
+  });
+});
+// Tests Task 4: -------------------
+describe("GET: /api/articles", () => {
+  test("Returns array of objects", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((response) => {
+        expect(Array.isArray(response.body)).toBe(true);
+        expect(response.body.length).toBeGreaterThan(0);
+        expect(typeof response.body[0]).toBe("object");
+      });
+  });
+
+  test("Returned objects should include all properties but 'body'", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((response) => {
+        response.body.forEach((object) => {
+          expect(object).not.toHaveProperty("body");
+          expect(object).toHaveProperty("author");
+          expect(object).toHaveProperty("title");
+          expect(object).toHaveProperty("topic");
+          expect(object).toHaveProperty("created_at");
+          expect(object).toHaveProperty("votes");
+          expect(object).toHaveProperty("article_img_url");
+        });
+      });
+  });
+
+  test("Returned objects include an article_id property which will refer to article_id in comments table", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((response) => {
+        response.body.forEach((object) => {
+          expect(object).toHaveProperty("article_id");
+        });
+      });
+  });
+  test("Returned objects should contain a comment_count property with the total count of all the comments with the respective article_id", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((response) => {
+        response.body.forEach((object) => {
+          expect(object).toHaveProperty("comment_count");
+        });
+      });
+  });
+  test("Articles should be sorted by date in descending order", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((response) => {
+        for (let i = 0; i < response.body.length - 1; i++) {
+          expect(
+            new Date(response.body[i].created_at).getTime()
+          ).toBeGreaterThanOrEqual(
+            new Date(response.body[i + 1].created_at).getTime()
+          );
+        }
       });
   });
 });
