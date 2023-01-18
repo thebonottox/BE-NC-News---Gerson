@@ -102,13 +102,13 @@ describe("GET: /api/articles", () => {
       .get("/api/articles")
       .expect(200)
       .then((response) => {
-        for (let i = 0; i < response.body.length - 1; i++) {
-          expect(
-            new Date(response.body[i].created_at).getTime()
-          ).toBeGreaterThanOrEqual(
-            new Date(response.body[i + 1].created_at).getTime()
-          );
-        }
+        response.body.forEach((item, index) => {
+          if (index < response.body.length - 1) {
+            expect(new Date(item.created_at).getTime()).toBeGreaterThanOrEqual(
+              new Date(response.body[index + 1].created_at).getTime()
+            );
+          }
+        });
       });
   });
 });

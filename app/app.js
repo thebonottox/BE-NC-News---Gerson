@@ -2,8 +2,6 @@ const express = require("express");
 const { getTopics, getArticles } = require("./controllers/controllers");
 
 const app = express();
-app.use(express.json());
-
 //Requests:---------------------------------------
 app.get("/api/topics", getTopics);
 

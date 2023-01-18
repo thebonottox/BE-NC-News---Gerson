@@ -15,7 +15,7 @@ const fetchTopicsData = () => {
     });
 };
 
-const fetchArticlesData = () => {
+const fetchAllArticles = () => {
   const queryString = `SELECT comments.article_id as article_id,
    articles.author,articles.title, articles.topic,
     articles.created_at, articles.votes,
@@ -36,12 +36,12 @@ const fetchArticlesData = () => {
     return result.rows;
   });
   // .catch((err) => {
-  //   console.log(err + " in fetchArticlesData");
+  //   console.log(err + " in fetchAllArticles");
   // });
 };
 
 //---------------------------------------------------
 module.exports = {
   fetchTopicsData,
-  fetchArticlesData,
+  fetchAllArticles,
 };

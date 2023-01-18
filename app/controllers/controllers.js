@@ -1,5 +1,5 @@
 // need to require in functions in models
-const { fetchTopicsData, fetchArticlesData } = require("../models/models");
+const { fetchTopicsData, fetchAllArticles } = require("../models/models");
 
 // Controllers:
 const getTopics = (request, response, next) => {
@@ -17,14 +17,14 @@ const getTopics = (request, response, next) => {
 };
 
 const getArticles = (request, response, next) => {
-  fetchArticlesData()
-    .then((articlesData) => {
+  fetchAllArticles()
+    .then((articles) => {
       // if (!articlesData) {
       //   return response.status(404).send({ error: "Articles not found" });
       // }
       // console.log(articlesData, "<-----articlesData");
 
-      response.status(200).send(articlesData);
+      response.status(200).send(articles);
     })
     // .catch(next);
     .catch((err) => {
