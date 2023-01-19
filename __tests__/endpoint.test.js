@@ -112,3 +112,39 @@ describe("GET: /api/articles", () => {
       });
   });
 });
+
+// Test Task 5: --------------------
+describe("GET: /api/articles/:article_id", () => {
+  test("200: Returns articles object with required properties", () => {
+    return request(app)
+      .get("/api/articles/4")
+      .expect(200)
+      .then((response) => {
+        const article = response.body.article;
+        expect(article).toHaveProperty("author");
+        expect(article).toHaveProperty("title");
+        expect(article).toHaveProperty("article_id");
+        expect(article).toHaveProperty("body");
+        expect(article).toHaveProperty("topic");
+        expect(article).toHaveProperty("created_at");
+        expect(article).toHaveProperty("votes");
+        expect(article).toHaveProperty("article_img_url");
+      });
+  });
+  test("Ensure id passed in exists", () => {
+    return request(app)
+      .get("/api/articles/9")
+      .expect(200)
+      .then((response) => {
+        expect(response.body).toHaveProperty("article");
+      });
+  });
+  test("Ensure passed in value is a number", () => {
+    return request(app)
+      .get("/api/articles/3")
+      .expect(200)
+      .then((response) => {
+        expect(typeof response.body.article.article_id).toBe("number");
+      });
+  });
+});
