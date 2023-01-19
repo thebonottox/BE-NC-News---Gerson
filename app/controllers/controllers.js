@@ -3,6 +3,7 @@ const {
   fetchTopicsData,
   fetchAllArticles,
   fetchArticleById,
+  fetchCommentsByArticleId,
 } = require("../models/models");
 
 // Controllers:
@@ -38,5 +39,18 @@ const getArticleById = (request, response, next) => {
     });
 };
 
+const getCommentsByArticleId = (request, response, next) => {
+  const { article_id } = request.params;
+  fetchCommentsByArticleId(article_id)
+    .then((comments) => {
+      console.log(comments);
+      response.status(200).send(comments);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
 //---------------------------------------------
-module.exports = { getTopics, getArticles, getArticleById };
+
+module.exports = { getTopics, getArticles,getArticleById,getCommentsByArticleId };
+

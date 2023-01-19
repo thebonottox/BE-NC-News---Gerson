@@ -52,9 +52,21 @@ const fetchArticleById = (article_id) => {
   });
 };
 
+const fetchCommentsByArticleId = (article_id) => {
+  const queryString = `SELECT * FROM comments WHERE comments.article_id = $1
+   ORDER BY created_at DESC`;
+  return db.query(queryString, [article_id]).then(({ rows, rowCount }) => {
+    if (rowCount === 0) {
+      return Promise.reject({ status: 404, msg: "Article ID not found." });
+    }
+    return rows;
+  });
+};
+
 //---------------------------------------------------
 module.exports = {
   fetchTopicsData,
   fetchAllArticles,
   fetchArticleById,
+  fetchCommentsByArticleId,
 };
