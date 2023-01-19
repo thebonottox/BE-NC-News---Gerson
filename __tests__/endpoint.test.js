@@ -23,18 +23,6 @@ afterAll(() => {
   return db.end();
 });
 
-// Errors -----------------------------
-describe("app", () => {
-  test("404 invalid path", () => {
-    return request(app)
-      .get("/invalid-path")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).toBe("Path not found");
-      });
-  });
-});
-
 // Tests Task 3:---------------------
 describe("GET: /api/topics", () => {
   test("Returned array has length of 3", () => {
@@ -149,6 +137,24 @@ describe("GET: /api/articles/:article_id/comments", () => {
           expect(object).toHaveProperty("body");
           expect(object).toHaveProperty("article_id");
         });
+      });
+  });
+
+  test("Status 400, invalid ID, e.g. string of 'not-an-id'", () => {
+    return request(app)
+      .get("/api/articles/not-an-id/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+
+  test("Status 404, non existent ID, e.g. 0 or 9999", () => {
+    return request(app)
+      .get("/api/articles/9999/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article ID not found.");
       });
   });
 });

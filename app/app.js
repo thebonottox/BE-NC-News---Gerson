@@ -28,7 +28,7 @@ app.use((err, req, res, next) => {
 });
 
 // Internal error handler
-app.use((req, res, next) => {
+app.use((err, req, res, next) => {
   res.status(404).send({ msg: "Path not found" });
 });
 
