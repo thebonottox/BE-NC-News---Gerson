@@ -35,13 +35,25 @@ const fetchAllArticles = () => {
 
     return result.rows;
   });
-  // .catch((err) => {
-  //   console.log(err + " in fetchAllArticles");
-  // });
+};
+
+const fetchCommentsByArticleId = (article_id) => {
+  const queryString = `SELECT * FROM comments WHERE comments.article_id = $1
+   ORDER BY created_at DESC`;
+  return db.query(queryString, [article_id]).then((result) => {
+    if (!result) {
+      return Promise.reject({
+        status: 404,
+        msg: `Somenthing went wrong`,
+      });
+    }
+    return result.rows;
+  });
 };
 
 //---------------------------------------------------
 module.exports = {
   fetchTopicsData,
   fetchAllArticles,
+  fetchCommentsByArticleId,
 };

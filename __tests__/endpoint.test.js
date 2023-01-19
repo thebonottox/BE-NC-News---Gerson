@@ -23,6 +23,18 @@ afterAll(() => {
   return db.end();
 });
 
+// Errors -----------------------------
+describe("app", () => {
+  test("404 invalid path", () => {
+    return request(app)
+      .get("/invalid-path")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Path not found");
+      });
+  });
+});
+
 // Tests Task 3:---------------------
 describe("GET: /api/topics", () => {
   test("Returned array has length of 3", () => {
@@ -108,6 +120,34 @@ describe("GET: /api/articles", () => {
               new Date(response.body[index + 1].created_at).getTime()
             );
           }
+        });
+      });
+  });
+});
+
+// Tests Task 6: -----------------
+describe("GET: /api/articles/:article_id/comments", () => {
+  test("Returns array of objects", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then((response) => {
+        expect(Array.isArray(response.body)).toBe(true);
+        expect(typeof response.body[0]).toBe("object");
+      });
+  });
+  test("Returned objects should include requested properties", () => {
+    return request(app)
+      .get("/api/articles/9/comments")
+      .expect(200)
+      .then((response) => {
+        response.body.forEach((object) => {
+          expect(object).toHaveProperty("comment_id");
+          expect(object).toHaveProperty("votes");
+          expect(object).toHaveProperty("created_at");
+          expect(object).toHaveProperty("author");
+          expect(object).toHaveProperty("body");
+          expect(object).toHaveProperty("article_id");
         });
       });
   });
