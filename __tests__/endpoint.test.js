@@ -131,4 +131,20 @@ describe("GET: /api/articles/:article_id", () => {
         expect(article).toHaveProperty("article_img_url");
       });
   });
+  test("Ensure id passed in exists", () => {
+    return request(app)
+      .get("/api/articles/9")
+      .expect(200)
+      .then((response) => {
+        expect(response.body).toHaveProperty("article");
+      });
+  });
+  test("Ensure passed in value is a number", () => {
+    return request(app)
+      .get("/api/articles/3")
+      .expect(200)
+      .then((response) => {
+        expect(typeof response.body.article.article_id).toBe("number");
+      });
+  });
 });
