@@ -113,7 +113,90 @@ describe("GET: /api/articles", () => {
   });
 });
 
-// Tests Task 6: -----------------
+// Test Task 5: --------------------
+describe("GET: /api/articles/:article_id", () => {
+  test("200: Returns articles object with required properties", () => {
+    return request(app)
+      .get("/api/articles/4")
+      .expect(200)
+      .then((response) => {
+        const article = response.body.article;
+        expect(article).toHaveProperty("author");
+        expect(article).toHaveProperty("title");
+        expect(article).toHaveProperty("article_id");
+        expect(article).toHaveProperty("body");
+        expect(article).toHaveProperty("topic");
+        expect(article).toHaveProperty("created_at");
+        expect(article).toHaveProperty("votes");
+        expect(article).toHaveProperty("article_img_url");
+      });
+  });
+  test("Ensure id passed in exists", () => {
+    return request(app)
+      .get("/api/articles/9")
+      .expect(200)
+      .then((response) => {
+        expect(response.body).toHaveProperty("article");
+      });
+  });
+  test("Ensure passed in value is a number", () => {
+    return request(app)
+      .get("/api/articles/3")
+      .expect(200)
+      .then((response) => {
+        expect(typeof response.body.article.article_id).toBe("number");
+      });
+  });
+
+  // Tests Task 6: -----------------
+  describe("GET: /api/articles/:article_id/comments", () => {
+    test("Returns array of objects", () => {
+      return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then((response) => {
+          expect(Array.isArray(response.body)).toBe(true);
+          expect(typeof response.body[0]).toBe("object");
+        });
+    });
+    test("Returned objects should include requested properties", () => {
+      return request(app)
+        .get("/api/articles/9/comments")
+        .expect(200)
+        .then((response) => {
+          response.body.forEach((object) => {
+            expect(object).toHaveProperty("comment_id");
+            expect(object).toHaveProperty("votes");
+            expect(object).toHaveProperty("created_at");
+            expect(object).toHaveProperty("author");
+            expect(object).toHaveProperty("body");
+            expect(object).toHaveProperty("article_id");
+          });
+        });
+    });
+
+    test("Status 400, invalid ID, e.g. string of 'not-an-id'", () => {
+      return request(app)
+        .get("/api/articles/not-an-id/comments")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Bad Request");
+        });
+    });
+
+    test("Status 404, non existent ID, e.g. 0 or 9999", () => {
+      return request(app)
+        .get("/api/articles/9999/comments")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Article ID not found.");
+        });
+    });
+  });
+});
+
+// Tests Task 6: -----------------------------
+
 describe("GET: /api/articles/:article_id/comments", () => {
   test("Returns array of objects", () => {
     return request(app)

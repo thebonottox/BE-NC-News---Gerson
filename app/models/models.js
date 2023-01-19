@@ -7,7 +7,6 @@ const fetchTopicsData = () => {
   return db
     .query(queryString)
     .then((result) => {
-      //   console.log(result.rows, "<--------result seems right");
       return result.rows;
     })
     .catch((err) => {
@@ -37,6 +36,22 @@ const fetchAllArticles = () => {
   });
 };
 
+const fetchArticleById = (article_id) => {
+  const queryString = `SELECT comments.article_id, articles.*
+   FROM articles LEFT JOIN comments
+      ON articles.article_id = comments.article_id
+      WHERE articles.article_id = $1`;
+  return db.query(queryString, [article_id]).then((result) => {
+    if (!result) {
+      return Promise.reject({
+        status: 404,
+        msg: `Something went wrong`,
+      });
+    }
+    return result.rows[0];
+  });
+};
+
 const fetchCommentsByArticleId = (article_id) => {
   const queryString = `SELECT * FROM comments WHERE comments.article_id = $1
    ORDER BY created_at DESC`;
@@ -52,5 +67,6 @@ const fetchCommentsByArticleId = (article_id) => {
 module.exports = {
   fetchTopicsData,
   fetchAllArticles,
+  fetchArticleById,
   fetchCommentsByArticleId,
 };
