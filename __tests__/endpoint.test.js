@@ -299,3 +299,42 @@ describe("POST: /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+// Tests Task 8: -----------------------------
+
+describe("PATCH: /api/articles/:article_id", () => {
+  test("200: Returns articles object with required properties", () => {
+    return request(app)
+      .patch("/api/articles/4")
+      .expect(200)
+      .send({ inc_votes: 10 })
+      .then((response) => {
+        const article = response.body;
+        expect(article).toHaveProperty("author");
+        expect(article).toHaveProperty("title");
+        expect(article).toHaveProperty("article_id");
+        expect(article).toHaveProperty("body");
+        expect(article).toHaveProperty("topic");
+        expect(article).toHaveProperty("created_at");
+        expect(article).toHaveProperty("votes");
+        expect(article).toHaveProperty("article_img_url");
+      });
+  });
+  test("Status 400, invalid ID, e.g. string of 'not-an-id'", () => {
+    return request(app)
+      .get("/api/articles/not-an-id/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+
+  test("Status 404, non existent ID, e.g. 0 or 9999", () => {
+    return request(app)
+      .get("/api/articles/9999/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article ID not found.");
+      });
+  });
+});
