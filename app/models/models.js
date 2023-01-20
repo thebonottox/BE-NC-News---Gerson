@@ -63,10 +63,23 @@ const fetchCommentsByArticleId = (article_id) => {
   });
 };
 
+const addComment = (newComment, article_id) => {
+  const insertQuery = `INSERT INTO comments
+  (author, body, article_id)
+  VALUES ($1, $2, $3)
+  RETURNING *`;
+  return db
+    .query(insertQuery, [newComment.username, newComment.body, article_id])
+    .then(({ rows }) => {
+      return rows;
+    });
+};
+
 //---------------------------------------------------
 module.exports = {
   fetchTopicsData,
   fetchAllArticles,
   fetchArticleById,
   fetchCommentsByArticleId,
+  addComment,
 };

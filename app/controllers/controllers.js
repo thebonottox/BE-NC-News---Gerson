@@ -4,6 +4,7 @@ const {
   fetchAllArticles,
   fetchArticleById,
   fetchCommentsByArticleId,
+  addComment,
 } = require("../models/models");
 
 // Controllers:
@@ -43,8 +44,20 @@ const getCommentsByArticleId = (request, response, next) => {
   const { article_id } = request.params;
   fetchCommentsByArticleId(article_id)
     .then((comments) => {
-      console.log(comments);
       response.status(200).send(comments);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+const postComment = (request, response, next) => {
+  const { article_id } = request.params;
+  const newComment = request.body;
+  addComment(newComment, article_id)
+    .then((rows) => {
+      const sendBack = { username: rows[0].author, body: rows[0].body };
+      response.status(201).send(sendBack);
     })
     .catch((err) => {
       next(err);
@@ -52,5 +65,10 @@ const getCommentsByArticleId = (request, response, next) => {
 };
 //---------------------------------------------
 
-module.exports = { getTopics, getArticles,getArticleById,getCommentsByArticleId };
-
+module.exports = {
+  getTopics,
+  getArticles,
+  getArticleById,
+  getCommentsByArticleId,
+  postComment,
+};
