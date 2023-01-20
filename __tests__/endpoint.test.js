@@ -241,3 +241,61 @@ describe("GET: /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+// Tests Task 7:----------------------------
+
+describe("POST: /api/articles/:article_id/comments", () => {
+  test("responds with the inserted comment data", () => {
+    return request(app)
+      .post("/api/articles/9/comments")
+      .expect(201)
+      .send({
+        username: "butter_bridge",
+        body: "I have a body",
+      })
+      .then((response) => {
+        const body = response.body;
+        expect(body).toEqual({
+          username: "butter_bridge",
+          body: "I have a body",
+        });
+      });
+  });
+
+  test("Returned object should include requested properties", () => {
+    return request(app)
+      .post("/api/articles/9/comments")
+      .expect(201)
+      .send({
+        username: "butter_bridge",
+        body: "I have a body",
+      })
+      .then((response) => {
+        // response.body.forEach((object) => {
+        expect(response.body).toHaveProperty("username");
+        expect(response.body).toHaveProperty("body");
+      });
+  });
+
+  test("Status 400, invalid ID, e.g. string of 'not-an-id'", () => {
+    return request(app)
+      .post("/api/articles/not-an-id/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+
+  test("Status 404, non existent ID, e.g. 0 or 9999", () => {
+    return request(app)
+      .post("/api/articles/9999/comments")
+      .expect(404)
+      .send({
+        username: "butter_bridge",
+        body: "I have a body",
+      })
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article ID not found.");
+      });
+  });
+});
