@@ -4,6 +4,7 @@ const {
   fetchAllArticles,
   fetchArticleById,
   fetchCommentsByArticleId,
+  updateVotesByArticleId,
   addComment,
 } = require("../models/models");
 
@@ -63,6 +64,15 @@ const postComment = (request, response, next) => {
       next(err);
     });
 };
+
+const patchVotes = (request, response, next) => {
+  const { article_id } = request.params;
+  const { inc_votes } = request.body;
+  updateVotesByArticleId(article_id, inc_votes).then((updatedArticle) => {
+    response.status(200).send(updatedArticle);
+  });
+};
+
 //---------------------------------------------
 
 module.exports = {
@@ -71,4 +81,5 @@ module.exports = {
   getArticleById,
   getCommentsByArticleId,
   postComment,
+  patchVotes,
 };
