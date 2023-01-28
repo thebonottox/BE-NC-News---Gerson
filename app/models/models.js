@@ -75,7 +75,6 @@ const addComment = (newComment, article_id) => {
     });
 };
 
-
 const updateVotesByArticleId = (article_id, inc_votes) => {
   const updateQuery = `UPDATE articles SET votes = votes + $1 WHERE articles.article_id = $2 RETURNING*`;
   return db.query(updateQuery, [inc_votes, article_id]).then((result) => {
