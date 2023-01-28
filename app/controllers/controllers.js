@@ -6,6 +6,7 @@ const {
   fetchCommentsByArticleId,
   updateVotesByArticleId,
   addComment,
+  fetchAllUsers,
 } = require("../models/models");
 
 // Controllers:
@@ -73,6 +74,17 @@ const patchVotes = (request, response, next) => {
   });
 };
 
+const getUsers = (request, response, next) => {
+  fetchAllUsers()
+    .then((users) => {
+      response.status(200).send(users);
+      console.log(users);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
 //---------------------------------------------
 
 module.exports = {
@@ -82,4 +94,5 @@ module.exports = {
   getCommentsByArticleId,
   postComment,
   patchVotes,
+  getUsers,
 };

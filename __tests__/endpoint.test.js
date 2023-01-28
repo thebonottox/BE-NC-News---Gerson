@@ -26,7 +26,7 @@ afterAll(() => {
 // Tests Task 3:---------------------
 describe("GET: /api/topics", () => {
   test("Returned array has length of 3", () => {
-    const response = request(app)
+    return request(app)
       .get("/api/topics")
       .expect(200)
       .then((response) => {
@@ -289,6 +289,45 @@ describe("PATCH: /api/articles/:article_id", () => {
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Article ID not found.");
+      });
+  });
+});
+
+// Tests Task 9: -----------------------------
+
+describe("GET: /api/users", () => {
+  test("Returned array has length of 4", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.length).toBe(4);
+      });
+  });
+
+  test("Test that the response is an array of objects", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then((response) => {
+        expect(Array.isArray(response.body)).toBe(true);
+        expect(typeof response.body[0]).toBe("object");
+      });
+  });
+
+  test("Returned object contains three properties", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then((response) => {
+        response.body.forEach((object) => {
+          expect(object).toHaveProperty("username");
+          expect(object.username).toEqual(expect.any(String));
+          expect(object).toHaveProperty("name");
+          expect(object.name).toEqual(expect.any(String));
+          expect(object).toHaveProperty("avatar_url");
+          expect(object.avatar_url).toEqual(expect.any(String));
+        });
       });
   });
 });
