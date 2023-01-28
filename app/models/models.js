@@ -81,6 +81,19 @@ const updateVotesByArticleId = (article_id, inc_votes) => {
     return result.rows[0];
   });
 };
+
+const fetchAllUsers = () => {
+  const queryString = `SELECT * FROM users`;
+  return db
+    .query(queryString)
+    .then((result) => {
+      return result.rows;
+    })
+    .catch((err) => {
+      console.log(err + " in fetchAllUsers");
+    });
+};
+
 //---------------------------------------------------
 module.exports = {
   fetchTopicsData,
@@ -89,4 +102,5 @@ module.exports = {
   fetchCommentsByArticleId,
   updateVotesByArticleId,
   addComment,
+  fetchAllUsers,
 };
