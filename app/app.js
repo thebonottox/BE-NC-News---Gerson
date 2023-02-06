@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const {
   getTopics,
@@ -9,9 +10,11 @@ const {
   postComment,
   patchVotes,
   getUsers,
+  // getArticleByQuery,
 } = require("./controllers/controllers");
 
 const app = express();
+app.use(cors());
 
 app.use(express.json());
 app.use(bodyParser.json());
@@ -30,6 +33,8 @@ app.post("/api/articles/:article_id/comments", postComment);
 app.patch("/api/articles/:article_id", patchVotes);
 
 app.get("/api/users", getUsers);
+
+// app.get("/api/articles/", getArticleByQuery);
 
 // Customer errors:
 app.use((err, req, res, next) => {

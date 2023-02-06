@@ -7,6 +7,7 @@ const {
   updateVotesByArticleId,
   addComment,
   fetchAllUsers,
+  // fetchArticleByQuery,
 } = require("../models/models");
 
 // Controllers:
@@ -85,6 +86,18 @@ const getUsers = (request, response, next) => {
     });
 };
 
+// const getArticleByQuery = (request, response, next) => {
+//   const { topic } = request.query;
+//   console.log(topic);
+//   fetchArticleByQuery(topic)
+//     .then((articles) => {
+//       response.status(200).send(articles);
+//       console.log(articles);
+//     })
+//     .catch((err) => {
+//       next(err);
+//     });
+// };
 //---------------------------------------------
 
 module.exports = {
@@ -95,4 +108,5 @@ module.exports = {
   postComment,
   patchVotes,
   getUsers,
+  // getArticleByQuery,
 };

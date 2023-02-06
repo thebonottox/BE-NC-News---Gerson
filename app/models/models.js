@@ -94,6 +94,20 @@ const fetchAllUsers = () => {
     });
 };
 
+// const fetchArticleByQuery = (topic) => {
+//   const queryValues = [];
+//   let queryString = `SELECT * FROM articles `;
+
+//   if (topic !== undefined) {
+//     queryString += ` WHERE topic = $1`;
+//     queryValues.push(topic);
+//   }
+//   console.log(queryString, queryValues);
+//   return db.query(queryString, queryValues).then(({ rows }) => {
+//     console.log(rows);
+//     return rows;
+//   });
+// };
 //---------------------------------------------------
 module.exports = {
   fetchTopicsData,
@@ -103,4 +117,5 @@ module.exports = {
   updateVotesByArticleId,
   addComment,
   fetchAllUsers,
+  // fetchArticleByQuery,
 };

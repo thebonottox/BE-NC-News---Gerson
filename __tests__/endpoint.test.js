@@ -294,7 +294,6 @@ describe("PATCH: /api/articles/:article_id", () => {
 });
 
 // Tests Task 9: -----------------------------
-
 describe("GET: /api/users", () => {
   test("Returned array has length of 4", () => {
     return request(app)
@@ -331,3 +330,19 @@ describe("GET: /api/users", () => {
       });
   });
 });
+
+// Tests Task 10: -----------------------------
+// describe("GET: /api/articles + query", () => {
+//   test("200 accepts a topic query", () => {
+//     return request(app)
+//       .get(`/api/articles?topic=mitch`)
+//       .expect(200)
+//       .then(({ body }) => {
+//         // console.log(body);
+//         expect(body).toHaveLength(11);
+//         articles.forEach((article) => {
+//           expect(article.topic).toBe("mitch");
+//         });
+//       });
+//   });
+// });
