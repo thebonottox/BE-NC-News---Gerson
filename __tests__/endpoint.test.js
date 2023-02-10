@@ -294,7 +294,6 @@ describe("PATCH: /api/articles/:article_id", () => {
 });
 
 // Tests Task 9: -----------------------------
-
 describe("GET: /api/users", () => {
   test("Returned array has length of 4", () => {
     return request(app)
@@ -333,6 +332,7 @@ describe("GET: /api/users", () => {
 });
 
 // Tests Task 10: -----------------------------
+ 10.GET/api/articles_queries
 describe("GET: /api/articles + query", () => {
   test("200 accepts a topic query", () => {
     return request(app)
@@ -347,3 +347,4 @@ describe("GET: /api/articles + query", () => {
       });
   });
 });
+

@@ -7,7 +7,7 @@ const {
   updateVotesByArticleId,
   addComment,
   fetchAllUsers,
-  // fetchArticlesByTopic
+
 } = require("../models/models");
 
 // Controllers:
@@ -88,7 +88,6 @@ const getUsers = (request, response, next) => {
 };
 
 
-
 //---------------------------------------------
 
 module.exports = {
@@ -99,5 +98,5 @@ module.exports = {
   postComment,
   patchVotes,
   getUsers,
-  // getArticlesByTopic,
+
 };
