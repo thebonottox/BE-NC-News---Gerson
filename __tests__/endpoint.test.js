@@ -332,7 +332,7 @@ describe("GET: /api/users", () => {
 });
 
 // Tests Task 10: -----------------------------
- 
+
 describe("GET: /api/articles + query", () => {
   test("200 accepts a topic query", () => {
     return request(app)
@@ -348,3 +348,17 @@ describe("GET: /api/articles + query", () => {
   });
 });
 
+// Tests Task 11: -----------------------------
+
+describe("GET: /api/articles/:article_id returns comment_count", () => {
+  test("200: Article by ID returns comment_count", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then((response) => {
+        const article = response.body.article;
+        expect(article).toHaveProperty("comment_count");
+        expect(parseInt(article.comment_count)).toBe(11);
+      });
+  });
+});

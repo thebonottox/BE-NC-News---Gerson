@@ -40,11 +40,29 @@ const fetchAllArticles = (topic) => {
   });
 }; // accepts topic query
 
+// const fetchArticleById = (article_id) => {
+//   const queryString = `SELECT comments.article_id, articles.*
+//    FROM articles LEFT JOIN comments
+//       ON articles.article_id = comments.article_id
+//       WHERE articles.article_id = $1`;
+//   return db.query(queryString, [article_id]).then((result) => {
+//     if (!result) {
+//       return Promise.reject({
+//         status: 404,
+//         msg: `Something went wrong`,
+//       });
+//     }
+//     return result.rows[0];
+//   });
+// };
+
 const fetchArticleById = (article_id) => {
-  const queryString = `SELECT comments.article_id, articles.*
+  const queryString = `SELECT articles.*,
+     COUNT(comments.article_id) AS comment_count
    FROM articles LEFT JOIN comments
       ON articles.article_id = comments.article_id
-      WHERE articles.article_id = $1`;
+      WHERE articles.article_id = $1
+      GROUP BY articles.article_id`;
   return db.query(queryString, [article_id]).then((result) => {
     if (!result) {
       return Promise.reject({
