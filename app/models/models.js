@@ -14,17 +14,21 @@ const fetchTopicsData = () => {
     });
 };
 
-const fetchAllArticles = () => {
-  const queryString = `SELECT comments.article_id as article_id,
+const fetchAllArticles = (topic) => {
+  let queryValues = [];
+  let queryString = `SELECT comments.article_id as article_id,
    articles.author,articles.title, articles.topic,
     articles.created_at, articles.votes,
      articles.article_img_url, COUNT(comments.article_id) as comment_count FROM articles LEFT JOIN comments
-      ON articles.article_id = comments.article_id GROUP BY comments.article_id, articles.author, articles.title, articles.topic, articles.created_at, articles.votes,
+      ON articles.article_id = comments.article_id `;
+  if (topic !== undefined) {
+    queryString += 'WHERE articles.topic = $1';
+    queryValues.push(topic);
+  }
+  queryString += `GROUP BY comments.article_id, articles.author, articles.title, articles.topic, articles.created_at, articles.votes,
       articles.article_img_url
       ORDER BY created_at DESC`;
-  return db.query(queryString).then((result) => {
-    // console.log(result.rows, "<--------result");
-
+  return db.query(queryString, queryValues).then((result) => {
     if (!result) {
       return Promise.reject({
         status: 404,
@@ -34,7 +38,7 @@ const fetchAllArticles = () => {
 
     return result.rows;
   });
-};
+}; // accepts topic query
 
 const fetchArticleById = (article_id) => {
   const queryString = `SELECT comments.article_id, articles.*
@@ -103,4 +107,5 @@ module.exports = {
   updateVotesByArticleId,
   addComment,
   fetchAllUsers,
+  // fetchArticlesByTopic,
 };

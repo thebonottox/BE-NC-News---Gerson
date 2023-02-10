@@ -7,6 +7,7 @@ const {
   updateVotesByArticleId,
   addComment,
   fetchAllUsers,
+  // fetchArticlesByTopic
 } = require("../models/models");
 
 // Controllers:
@@ -21,14 +22,15 @@ const getTopics = (request, response, next) => {
 };
 
 const getArticles = (request, response, next) => {
-  fetchAllArticles()
+  const { topic } = request.query;
+  fetchAllArticles(topic)
     .then((articles) => {
       response.status(200).send(articles);
     })
     .catch((err) => {
       next(err);
     });
-};
+}; // accepts topic query
 
 const getArticleById = (request, response, next) => {
   const { article_id } = request.params;
@@ -85,6 +87,8 @@ const getUsers = (request, response, next) => {
     });
 };
 
+
+
 //---------------------------------------------
 
 module.exports = {
@@ -95,4 +99,5 @@ module.exports = {
   postComment,
   patchVotes,
   getUsers,
+  // getArticlesByTopic,
 };

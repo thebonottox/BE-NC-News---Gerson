@@ -9,6 +9,7 @@ const {
   postComment,
   patchVotes,
   getUsers,
+  getArticlesByTopic,
 } = require("./controllers/controllers");
 
 const app = express();
@@ -19,7 +20,7 @@ app.use(bodyParser.json());
 //Requests:---------------------------------------
 app.get("/api/topics", getTopics);
 
-app.get("/api/articles", getArticles);
+app.get("/api/articles", getArticles); // accepts query
 
 app.get("/api/articles/:article_id", getArticleById);
 
@@ -30,6 +31,8 @@ app.post("/api/articles/:article_id/comments", postComment);
 app.patch("/api/articles/:article_id", patchVotes);
 
 app.get("/api/users", getUsers);
+
+
 
 // Customer errors:
 app.use((err, req, res, next) => {

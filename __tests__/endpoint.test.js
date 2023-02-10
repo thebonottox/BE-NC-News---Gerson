@@ -331,3 +331,19 @@ describe("GET: /api/users", () => {
       });
   });
 });
+
+// Tests Task 10: -----------------------------
+describe("GET: /api/articles + query", () => {
+  test("200 accepts a topic query", () => {
+    return request(app)
+      .get(`/api/articles?topic=mitch`)
+      .expect(200)
+      .then(({ body }) => {
+        console.log(body);
+        expect(Array.isArray(body)).toBe(true);
+        body.forEach((article) => {
+          expect(article).toHaveProperty("topic", "mitch");
+        });
+      });
+  });
+});
