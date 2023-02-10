@@ -332,7 +332,7 @@ describe("GET: /api/users", () => {
 });
 
 // Tests Task 10: -----------------------------
- 10.GET/api/articles_queries
+ 
 describe("GET: /api/articles + query", () => {
   test("200 accepts a topic query", () => {
     return request(app)
