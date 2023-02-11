@@ -339,7 +339,6 @@ describe("GET: /api/articles + query", () => {
       .get(`/api/articles?topic=mitch`)
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(Array.isArray(body)).toBe(true);
         body.forEach((article) => {
           expect(article).toHaveProperty("topic", "mitch");
@@ -381,6 +380,19 @@ describe("DELETE: /api/comments/:comment_id", () => {
         console.log(response.body);
         expect(response.body).toHaveProperty("msg");
         expect(response.body.msg).toBe("Bad Request");
+      });
+  });
+});
+
+// Tests Task 13: -----------------------------
+
+describe("GET: /api", () => {
+  test("Returns JSON file", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then((response) => {
+        expect(typeof response.body).toBe("object");
       });
   });
 });
