@@ -11,6 +11,7 @@ const {
   patchVotes,
   getUsers,
   deleteComment,
+  getAllEndpoints,
 } = require("./controllers/controllers");
 
 const app = express();
@@ -35,6 +36,8 @@ app.patch("/api/articles/:article_id", patchVotes);
 app.get("/api/users", getUsers);
 
 app.delete("/api/comments/:comment_id", deleteComment);
+
+app.get("/api", getAllEndpoints);
 
 // Customer errors:
 app.use((err, req, res, next) => {

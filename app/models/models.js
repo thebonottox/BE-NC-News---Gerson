@@ -1,4 +1,5 @@
 const db = require("../../db/connection");
+const fs = require("fs");
 
 //Model Functions:
 
@@ -108,6 +109,15 @@ const removeComment = (comment_id) => {
   });
 };
 
+const fetchAllEndpoints = (callback) => {
+  fs.readFile(`endpoints.json`, "utf-8", (err, data) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, JSON.parse(data));
+    }
+  });
+};
 //---------------------------------------------------
 module.exports = {
   fetchTopicsData,
@@ -118,4 +128,5 @@ module.exports = {
   addComment,
   fetchAllUsers,
   removeComment,
+  fetchAllEndpoints,
 };

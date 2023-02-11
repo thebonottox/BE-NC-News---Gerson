@@ -8,6 +8,7 @@ const {
   addComment,
   fetchAllUsers,
   removeComment,
+  fetchAllEndpoints,
 } = require("../models/models");
 
 // Controllers:
@@ -79,8 +80,7 @@ const patchVotes = (request, response, next) => {
 const getUsers = (request, response, next) => {
   fetchAllUsers()
     .then((users) => {
-      response.status(200).send(users);
-      console.log(users);
+      response.status(200).send(users);      
     })
     .catch((err) => {
       next(err);
@@ -98,6 +98,18 @@ const deleteComment = (request, response, next) => {
     });
 };
 
+// const endpointsData = require("../endpoints");
+
+const getAllEndpoints = (request, response) => {
+  fetchAllEndpoints((err, data) => {
+    if (err) {
+      response.status(500).send({ error: "Error reading file" });
+    } else {
+      response.status(200).send(data);
+    }
+  });
+};
+
 //---------------------------------------------
 
 module.exports = {
@@ -109,4 +121,5 @@ module.exports = {
   patchVotes,
   getUsers,
   deleteComment,
+  getAllEndpoints,
 };
