@@ -7,7 +7,7 @@ const {
   updateVotesByArticleId,
   addComment,
   fetchAllUsers,
-
+  removeComment,
 } = require("../models/models");
 
 // Controllers:
@@ -87,6 +87,16 @@ const getUsers = (request, response, next) => {
     });
 };
 
+const deleteComment = (request, response, next) => {
+  const { comment_id } = request.params;
+  removeComment(comment_id)
+    .then((comment) => {
+      response.status(204).send(comment);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
 
 //---------------------------------------------
 
@@ -98,5 +108,5 @@ module.exports = {
   postComment,
   patchVotes,
   getUsers,
-
+  deleteComment,
 };

@@ -349,7 +349,6 @@ describe("GET: /api/articles + query", () => {
 });
 
 // Tests Task 11: -----------------------------
-
 describe("GET: /api/articles/:article_id returns comment_count", () => {
   test("200: Article by ID returns comment_count", () => {
     return request(app)
@@ -359,6 +358,29 @@ describe("GET: /api/articles/:article_id returns comment_count", () => {
         const article = response.body.article;
         expect(article).toHaveProperty("comment_count");
         expect(parseInt(article.comment_count)).toBe(11);
+      });
+  });
+});
+
+// Tests Task 12: -----------------------------
+
+describe("DELETE: /api/comments/:comment_id", () => {
+  test("204: Comment_id deletes and returns 204", () => {
+    return request(app)
+      .delete("/api/comments/362")
+      .expect(204)
+      .then((response) => {
+        expect(response.body).toEqual({});
+      });
+  });
+  test("400: Responds w/ bad request for invalid id", () => {
+    return request(app)
+      .delete("/api/comments/dog")
+      .expect(400)
+      .then((response) => {
+        console.log(response.body);
+        expect(response.body).toHaveProperty("msg");
+        expect(response.body.msg).toBe("Bad Request");
       });
   });
 });

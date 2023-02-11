@@ -22,7 +22,7 @@ const fetchAllArticles = (topic) => {
      articles.article_img_url, COUNT(comments.article_id) as comment_count FROM articles LEFT JOIN comments
       ON articles.article_id = comments.article_id `;
   if (topic !== undefined) {
-    queryString += 'WHERE articles.topic = $1';
+    queryString += "WHERE articles.topic = $1";
     queryValues.push(topic);
   }
   queryString += `GROUP BY comments.article_id, articles.author, articles.title, articles.topic, articles.created_at, articles.votes,
@@ -39,22 +39,6 @@ const fetchAllArticles = (topic) => {
     return result.rows;
   });
 }; // accepts topic query
-
-// const fetchArticleById = (article_id) => {
-//   const queryString = `SELECT comments.article_id, articles.*
-//    FROM articles LEFT JOIN comments
-//       ON articles.article_id = comments.article_id
-//       WHERE articles.article_id = $1`;
-//   return db.query(queryString, [article_id]).then((result) => {
-//     if (!result) {
-//       return Promise.reject({
-//         status: 404,
-//         msg: `Something went wrong`,
-//       });
-//     }
-//     return result.rows[0];
-//   });
-// };
 
 const fetchArticleById = (article_id) => {
   const queryString = `SELECT articles.*,
@@ -116,6 +100,13 @@ const fetchAllUsers = () => {
     });
 };
 
+const removeComment = (comment_id) => {
+  const queryString = `DELETE FROM comments WHERE comments.comment_id = $1 RETURNING*`;
+  return db.query(queryString, [comment_id]).then((result) => {
+    console.log(result.rows);
+    return result.rows;
+  });
+};
 
 //---------------------------------------------------
 module.exports = {
@@ -126,5 +117,5 @@ module.exports = {
   updateVotesByArticleId,
   addComment,
   fetchAllUsers,
-
+  removeComment,
 };
