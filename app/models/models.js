@@ -15,7 +15,7 @@ const fetchTopicsData = () => {
     });
 };
 
-const fetchAllArticles = (topic) => {
+const fetchAllArticles = (topic, sort_by, order) => {
   let queryValues = [];
   let queryString = `SELECT comments.article_id as article_id,
    articles.author,articles.title, articles.topic,
@@ -28,7 +28,7 @@ const fetchAllArticles = (topic) => {
   }
   queryString += `GROUP BY comments.article_id, articles.author, articles.title, articles.topic, articles.created_at, articles.votes,
       articles.article_img_url
-      ORDER BY created_at DESC`;
+      ORDER BY ${sort_by || "created_at"} ${order || "DESC"}`;
   return db.query(queryString, queryValues).then((result) => {
     if (!result) {
       return Promise.reject({
