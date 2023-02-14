@@ -6,6 +6,7 @@ const { app } = require("../app/app.js");
 const db = require("../db/connection");
 // Require in Seed File:
 const seed = require("../db/seeds/seed");
+const fetchAllArticles = require("../app/models/models");
 
 //Require in test data:
 const {
@@ -339,10 +340,23 @@ describe("GET: /api/articles + query", () => {
       .get(`/api/articles?topic=mitch`)
       .expect(200)
       .then(({ body }) => {
+        console.log(body);
         expect(Array.isArray(body)).toBe(true);
         body.forEach((article) => {
           expect(article).toHaveProperty("topic", "mitch");
         });
+      });
+  });
+  test("should return articles sorted by title in ascending order", () => {
+    return request(app)
+      .get(`/api/articles?sort_by=title`)
+      .expect(200)
+      .then(({ body }) => {        
+        expect(body).toHaveLength(12);
+
+        for (let i = 0; i < body.length - 1; i++) {
+          expect(body[i].title <= body[i + 1].title).toBe(true);
+        }
       });
   });
 });

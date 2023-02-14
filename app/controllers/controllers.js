@@ -23,8 +23,8 @@ const getTopics = (request, response, next) => {
 };
 
 const getArticles = (request, response, next) => {
-  const { topic } = request.query;
-  fetchAllArticles(topic)
+  const { topic, sort_by, order } = request.query;
+  fetchAllArticles(topic, sort_by, order)
     .then((articles) => {
       response.status(200).send(articles);
     })
