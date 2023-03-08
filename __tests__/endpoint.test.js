@@ -347,15 +347,15 @@ describe("GET: /api/articles + query", () => {
         });
       });
   });
-  test("should return articles sorted by title in ascending order", () => {
+  test("should return articles sorted by title in descending order", () => {
     return request(app)
       .get(`/api/articles?sort_by=title`)
       .expect(200)
-      .then(({ body }) => {        
+      .then(({ body }) => {
         expect(body).toHaveLength(12);
 
         for (let i = 0; i < body.length - 1; i++) {
-          expect(body[i].title <= body[i + 1].title).toBe(true);
+          expect(body[i].title >= body[i + 1].title).toBe(true);
         }
       });
   });
